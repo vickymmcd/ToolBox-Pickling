@@ -30,11 +30,27 @@ def update_counter(file_name, reset=False):
     >>> update_counter('blah2.txt')
     2
     """
-    pass
+    if reset is False:
+        if exists(file_name):
+            f = open(file_name, 'rb+')
+            new_val = load(f) + 1
+            f.close()
+            f = open(file_name, 'wb')
+            dump(new_val, f)
+            return new_val
+        else:
+            f = open(file_name, 'wb')
+            dump(1, f)
+            return 1
+    else:
+        f = open(file_name, 'wb')
+        dump(1, f)
+        return 1
+
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
         import doctest
-        doctest.testmod()
+        doctest.testmod(verbose=True)
     else:
         print("new value is " + str(update_counter(sys.argv[1])))
